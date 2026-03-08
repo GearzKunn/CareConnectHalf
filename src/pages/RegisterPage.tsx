@@ -76,6 +76,8 @@ export default function RegisterPage() {
       description: data.message,
     });
 
+    localStorage.setItem("user_role",selectedRole);
+
      localStorage.setItem("otp_email", email);
      navigate("/otp-verify");
 

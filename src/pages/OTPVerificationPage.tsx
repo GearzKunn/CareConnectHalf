@@ -54,7 +54,13 @@ export default function OTPVerificationPage() {
 
   if (data.success) {
     toast({ title: "Verified!", description: "OTP verified successfully." });
-    navigate(`/dashboard/${user?.role || "elder"}`);
+    const role = user?.role;
+
+if (role) {
+  navigate(`/dashboard/${role}`);
+} else {
+  navigate("/login");
+}
   } else {
     toast({
       title: "Invalid OTP",
@@ -72,8 +78,7 @@ export default function OTPVerificationPage() {
         </div>
         <h1 className="text-3xl font-bold font-display mb-2 text-foreground">OTP Verification</h1>
         <p className="text-muted-foreground mb-2">Enter the 6-digit code sent to your email</p>
-        <p className="text-xs text-muted-foreground mb-8">(Simulated: enter any 6 digits)</p>
-
+      
         <div className="flex gap-3 justify-center mb-8">
           {otp.map((digit, i) => (
             <Input
