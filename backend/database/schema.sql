@@ -1,4 +1,6 @@
+SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS care_requests;
 DROP TABLE IF EXISTS `users`;
 
 
@@ -14,6 +16,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SET FOREIGN_KEY_CHECKS = 1;
 
 
 -- Elders
@@ -33,4 +36,12 @@ INSERT INTO users (name, email, password, role, status) VALUES
 -- Admins
 INSERT INTO users (name, email, password, role, status) VALUES
 ('Admin One', 'admin1@example.com', 'hashed_password_here', 'admin', 'pending');
+
+CREATE TABLE otp_codes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(100) NOT NULL,
+  otp VARCHAR(6) NOT NULL,
+  expires_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 

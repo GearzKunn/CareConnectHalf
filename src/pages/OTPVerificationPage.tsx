@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Heart, ShieldCheck } from "lucide-react";
@@ -13,6 +13,16 @@ export default function OTPVerificationPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const email = localStorage.getItem("otp_email");
+
+  useEffect(() => {
+  fetch("http://localhost:5000/api/send-otp", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  });
+}, []);
   
   const handleChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -26,17 +36,33 @@ export default function OTPVerificationPage() {
     }
   };
 
-  const handleVerify = () => {
-    const code = otp.join("");
-    if (code.length === 6) {
-      verifyOTP();
-      toast({ title: "Verified!", description: "OTP verified successfully." });
-      const role = user?.role || "elder";
-      navigate(`/dashboard/${role}`);
-    } else {
-      toast({ title: "Invalid OTP", description: "Please enter all 6 digits.", variant: "destructive" });
-    }
-  };
+  const handleVerify = async () => {
+  const code = otp.join("");
+
+  const res = await fetch("http://localhost:5000/api/verify-otp", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      otp: code
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    toast({ title: "Verified!", description: "OTP verified successfully." });
+    navigate(`/dashboard/${user?.role || "elder"}`);
+  } else {
+    toast({
+      title: "Invalid OTP",
+      description: data.message,
+      variant: "destructive"
+    });
+  }
+};
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
