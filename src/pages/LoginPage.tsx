@@ -74,7 +74,7 @@ export default function LoginPage() {
         <div className="relative z-10 text-center max-w-md">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <div className="w-20 h-20 rounded-3xl bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-8">
-              <Heart className="w-10 h-10 text-primary-foreground" />
+              <img src="/mylogo.png" alt="CareConnect Logo" className="w-full h-full object-cover" />
             </div>
             <h2 className="text-4xl font-extrabold font-display text-primary-foreground mb-4">Welcome Back</h2>
             <p className="text-primary-foreground/80 text-lg leading-relaxed">Sign in to continue managing compassionate care with security and transparency.</p>
